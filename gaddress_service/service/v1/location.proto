@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package gaddress_service.service.v1;
+
+option go_package = "github.com/ilkinabd-talk/grpc-contracts/gen/go/gaddress_service/service/v1;proto_location_service";
+
+import "google/api/annotations.proto";
+import "gaddress_service/model/v1/location.proto";
+
+service LocationService {
+  rpc LocationList(LocationListRequest) returns (LocationListResponse) {
+    option (google.api.http) = {
+      get: "/v1/locations"
+    };
+  }
+}
+
+message LocationListRequest {
+  string text = 1; // mapped to query URL parameters ?text=""
+}
+
+message LocationListResponse {
+  repeated model.v1.Location locations = 1;
+}

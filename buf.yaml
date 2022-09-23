@@ -1,7 +1,9 @@
 version: v1
 
-name: buf.build/grpc-contracts/user_service
+name: buf.build/xterminate/grpc-contracts
 
+deps:
+  - buf.build/googleapis/googleapis
 lint:
   use:
     - DEFAULT

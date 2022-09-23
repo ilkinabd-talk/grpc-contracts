@@ -3,7 +3,7 @@ MAKE_PATH=$(GOPATH)/bin:/bin:/usr/bin:/usr/local/bin:$PATH
 .PHONY: all
 all: clean format gen lint
 
-BUF_VERSION=1.6.0
+BUF_VERSION=1.8.0
 
 .PHONY: buf-install
 buf-install:
@@ -11,7 +11,7 @@ ifeq ($(shell uname -s), Darwin)
 	@[ ! -f $(GOPATH)/bin/buf ] || exit 0 && \
 	tmp=$$(mktemp -d) && cd $$tmp && \
 	curl -L -o buf \
-		https://github.com/bufbuild/buf/releases/download/v$(BUF_VERSION)/buf-Darwin-arm64 && \
+		https://github.com/bufbuild/buf/releases/download/v$(BUF_VERSION)/buf-Darwin-x86_64 && \
 	mv buf $(GOPATH)/bin/buf && \
 	chmod +x $(GOPATH)/bin/buf
 else
@@ -28,7 +28,10 @@ gen: buf-install
 	@$(GOPATH)/bin/buf generate
 	@for dir in $(CURDIR)/gen/go/*/; do \
 	  cd $$dir && \
-	  go mod init && go mod tidy; \
+	  path=`awk '{ sub(/.*grpc-contracts/, ""); print }' <<< $$dir` && \
+	  path=$$path'/' && \
+	  path=`echo $$path | sed s/'\/\/'/''/g` && \
+	  go mod init github.com/ilkinabd-talk/grpc-contracts$$path && go mod tidy; \
   	done
 
 .PHONY: lint
