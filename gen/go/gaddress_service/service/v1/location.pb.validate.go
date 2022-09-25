@@ -57,52 +57,15 @@ func (m *LocationListRequest) validate(all bool) error {
 
 	var errors []error
 
-	switch m.Input.(type) {
-
-	case *LocationListRequest_Ll:
-
-		if all {
-			switch v := interface{}(m.GetLl()).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, LocationListRequestValidationError{
-						field:  "Ll",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, LocationListRequestValidationError{
-						field:  "Ll",
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(m.GetLl()).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return LocationListRequestValidationError{
-					field:  "Ll",
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	case *LocationListRequest_Text:
-		// no validation rules for Text
-
-	default:
+	if utf8.RuneCountInString(m.GetText()) < 1 {
 		err := LocationListRequestValidationError{
-			field:  "Input",
-			reason: "value is required",
+			field:  "Text",
+			reason: "value length must be at least 1 runes",
 		}
 		if !all {
 			return err
 		}
 		errors = append(errors, err)
-
 	}
 
 	if len(errors) > 0 {
