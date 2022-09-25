@@ -22,3 +22,7 @@ plugins:
     out: gen/openapiv2
     opt:
       - allow_repeated_fields_in_body=true
+  - remote: buf.build/jirkad/plugins/protoc-gen-validate:v0.6.7
+    out: gen/validate
+    opt:
+      lang=go

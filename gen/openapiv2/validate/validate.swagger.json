@@ -1,76 +1,17 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "gaddress_service/service/v1/location.proto",
+    "title": "validate/validate.proto",
     "version": "version not set"
   },
-  "tags": [
-    {
-      "name": "LocationService"
-    }
-  ],
   "consumes": [
     "application/json"
   ],
   "produces": [
     "application/json"
   ],
-  "paths": {
-    "/v1/locations": {
-      "get": {
-        "operationId": "LocationService_LocationList",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1LocationListResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "ll.latitude",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "ll.longitude",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "text",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "LocationService"
-        ]
-      }
-    }
-  },
+  "paths": {},
   "definitions": {
-    "modelv1Location": {
-      "type": "object",
-      "properties": {
-        "shortName": {
-          "type": "string"
-        },
-        "longName": {
-          "type": "string"
-        }
-      }
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -103,28 +44,6 @@
         }
       },
       "description": "The `Status` type defines a logical error model that is suitable for\ndifferent programming environments, including REST APIs and RPC APIs. It is\nused by [gRPC](https://github.com/grpc). Each `Status` message contains\nthree pieces of data: error code, error message, and error details.\n\nYou can find out more about this error model and how to work with it in the\n[API Design Guide](https://cloud.google.com/apis/design/errors)."
-    },
-    "v1Coordinate": {
-      "type": "object",
-      "properties": {
-        "latitude": {
-          "type": "string"
-        },
-        "longitude": {
-          "type": "string"
-        }
-      }
-    },
-    "v1LocationListResponse": {
-      "type": "object",
-      "properties": {
-        "locations": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/modelv1Location"
-          }
-        }
-      }
     }
   }
 }

@@ -7,8 +7,7 @@ lint:
     - DEFAULT
   ignore:
     - google
-    - openapiv2
-    - examples
+    - validate
 
 breaking:
   use:
