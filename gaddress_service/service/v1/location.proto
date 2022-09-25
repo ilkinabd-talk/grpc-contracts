@@ -6,6 +6,7 @@ option go_package = "github.com/ilkinabd-talk/grpc-contracts/gen/go/gaddress_ser
 
 import "google/api/annotations.proto";
 import "gaddress_service/model/v1/location.proto";
+import "openapiv2/options/annotations.proto";
 
 service LocationService {
   rpc LocationList(LocationListRequest) returns (LocationListResponse) {
@@ -16,7 +17,12 @@ service LocationService {
 }
 
 message LocationListRequest {
-  string text = 1; // mapped to query URL parameters ?text=""
+  string text = 1 [(openapiv2.options.openapiv2_field) = {
+    min_length: 1,
+    required:[
+      "text"
+    ]
+  }];
 }
 
 message LocationListResponse {

@@ -2,13 +2,13 @@ version: v1
 
 name: buf.build/xterminate/grpc-contracts
 
-deps:
-  - buf.build/googleapis/googleapis
 lint:
   use:
     - DEFAULT
   ignore:
     - google
+    - openapiv2
+    - examples
 
 breaking:
   use:
