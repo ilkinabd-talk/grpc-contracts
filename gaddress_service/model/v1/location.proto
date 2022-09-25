@@ -5,6 +5,6 @@ package gaddress_service.model.v1;
 option go_package = "github.com/ilkinabd-talk/grpc-contracts/gen/go/gaddress_service/model/v1;proto_location_model";
 
 message Location {
-  string short_name = 1;
-  string long_name = 2;
+  string short_name = 1 [json_name="short_name"];
+  string long_name = 2 [json_name="long_name"];
 }
