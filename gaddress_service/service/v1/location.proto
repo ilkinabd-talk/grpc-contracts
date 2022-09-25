@@ -17,12 +17,20 @@ service LocationService {
 }
 
 message LocationListRequest {
-  string text = 1 [(validate.rules).string.min_len = 1];
+  oneof query {
+    option (validate.required) = true;
+    Coordinate coordinate = 1;
+    string text = 2 [(validate.rules).string.min_len = 1];
+  }
 }
 
 message Coordinate {
-  string latitude = 1;
-  string longitude = 2;
+  double latitude = 1 [(validate.rules).double = {
+    gte: -90,  lte: 90
+  }];
+  double longitude = 2 [(validate.rules).double = {
+    gte: -180, lte: 180
+  }];
 }
 
 message LocationListResponse {

@@ -57,15 +57,62 @@ func (m *LocationListRequest) validate(all bool) error {
 
 	var errors []error
 
-	if utf8.RuneCountInString(m.GetText()) < 1 {
+	switch m.Query.(type) {
+
+	case *LocationListRequest_Coordinate:
+
+		if all {
+			switch v := interface{}(m.GetCoordinate()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, LocationListRequestValidationError{
+						field:  "Coordinate",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, LocationListRequestValidationError{
+						field:  "Coordinate",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetCoordinate()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return LocationListRequestValidationError{
+					field:  "Coordinate",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	case *LocationListRequest_Text:
+
+		if utf8.RuneCountInString(m.GetText()) < 1 {
+			err := LocationListRequestValidationError{
+				field:  "Text",
+				reason: "value length must be at least 1 runes",
+			}
+			if !all {
+				return err
+			}
+			errors = append(errors, err)
+		}
+
+	default:
 		err := LocationListRequestValidationError{
-			field:  "Text",
-			reason: "value length must be at least 1 runes",
+			field:  "Query",
+			reason: "value is required",
 		}
 		if !all {
 			return err
 		}
 		errors = append(errors, err)
+
 	}
 
 	if len(errors) > 0 {
@@ -170,9 +217,27 @@ func (m *Coordinate) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Latitude
+	if val := m.GetLatitude(); val < -90 || val > 90 {
+		err := CoordinateValidationError{
+			field:  "Latitude",
+			reason: "value must be inside range [-90, 90]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
-	// no validation rules for Longitude
+	if val := m.GetLongitude(); val < -180 || val > 180 {
+		err := CoordinateValidationError{
+			field:  "Longitude",
+			reason: "value must be inside range [-180, 180]",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
 
 	if len(errors) > 0 {
 		return CoordinateMultiError(errors)
